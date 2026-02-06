@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+             font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: #fff;
+        }
+        .question {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            min-width: 120px;
+        }
+        .yes { background: #ff6b9d; color: white; }
+        .no { background: #ddd; color: #333; }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .yes:hover { background: #ff1493; }
+        .no:hover { background: #bbb; transform: translateX(20px) scale(1.05); } /* Dodge effect for No */
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            text-align: center;
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #ff6b9d;
+            display: none;
+            z-index: 20;
+        }
+        /* Heart balloon */
+        .heart-balloon {
+            position: absolute;
+            width: clamp(60px, 12vw, 100px);
+            height: clamp(60px, 12vw, 90px);
+            background: #ff69b4;
+            transform: rotate(-45deg);
+            animation: float 6s ease-in-out infinite;
+            z-index: 5;
+            cursor: default;
+        }
+        .heart-balloon:before,
+        .heart-balloon:after {
+            position: absolute;
+            content: "";
+            left: 50%;
+            top: 0;
+            width: 50%;
+            height: 80%;
+            background: #ff69b4;
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg) translateX(-50%);
+        }
+        .heart-balloon:after {
+            left: 0;
+            transform: rotate(45deg) translateX(-50%);
+        }
+        .heart-balloon-string {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: #333;
+            transform: translateX(-50%);
+        }
+        @keyframes float {
+            0%, 100% { transform: rotate(-45deg) translateY(0px) translateX(0) rotate(0deg); }
+            25% { transform: rotate(-45deg) translateY(-20px) translateX(-20px) rotate(5deg); }
+            50% { transform: rotate(-45deg) translateY(-40px) translateX(20px) rotate(-5deg); }
+            75% { transform: rotate(-45deg) translateY(-20px) translateX(-20px) rotate(5deg); }
+        }
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .buttons { flex-direction: column; align-items: center; }
+            button { width: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-balloon">
+        <div class="heart-balloon-string"></div>
+    </div>
+    <h1 class="question">Will you be my Valentine? 💕</h1>
+    <div class="buttons">
+        <button class="yes" onclick="showMessage()">Yes 😍</button>
+        <button class="no" onclick="playfulNo()">No 😢</button>
+    </div>
+    <div class="message" id="successMsg">
+        I knew you would say YES! ❤️<br>
+        Come to me and lets just 💋💋💋💋
+    </div>
+
+    <script>
+        // Floating balloon random position and restart
+        const balloon = document.querySelector('.heart-balloon');
+        function randomFloat() {
+            balloon.style.left = Math.random() * 80 + '%';
+            balloon.style.top = Math.random() * 80 + '%';
+            setTimeout(randomFloat, 6000);
+        }
+        randomFloat();
+
+        function showMessage() {
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.question').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+            balloon.style.display = 'none';
+        }
+
+        function playfulNo() {
+            const noBtn = document.querySelector('.no');
+            noBtn.innerHTML = 'Are you sure? 😏';
+            noBtn.style.transform = 'translateX(50px)';
+            setTimeout(() => {
+                noBtn.innerHTML = 'No? Really? 😜';
+                noBtn.style.transform = 'translateX(100px)';
+            }, 500);
+        }
+
+        // Dodge effect enhancement with JS for touch/mouse
+        document.querySelector('.no').addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(30px) scale(1.1)';
+        });
+        document.querySelector('.no').addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
+
